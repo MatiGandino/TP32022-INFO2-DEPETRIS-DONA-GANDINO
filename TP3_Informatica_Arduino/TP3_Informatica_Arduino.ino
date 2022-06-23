@@ -28,7 +28,7 @@ struct mediciones{                          //Estructura donde se guardaran los 
 
 union Umed {                                //Union donde se guardaran las mediciones y el envio de datos      
   mediciones med;                           //Estructura con los valores de las mediciones
-  byte a[sizeof(mediciones)];               //Envio de datos
+  byte a[sizeof(mediciones)];               //Arreglo de tipo Byte que se utiliza para el envio de datos
 }temp, hum, ult;                            
                                           
 
@@ -46,13 +46,13 @@ void setup(){
 
 void loop() {
     if(Serial.available()){                 //Si existe una lectura de datos desde el puerto serie habilita lo que hay dentro, sino no
-    letra = Serial.read();                  //Realiza la lectura de lo que se envia por el puerto serie
+    letra = Serial.read();                  //Realiza la lectura de lo que se envia por el puerto serie y lo almacena como char
     
   //Datos de sensor temperatura----------------------------------------------   
       if (letra == 't' || letra == 'T'){                                     //Evalua la letra recibida
       TEM = analogRead(SENSORTEM);                                           //Lee y guarda el valor del sensor de temperatura
       int temperatura = (((TEM * 5000.0) / 1023)/10);                        //Convierte el valor del sensor y lo guarda en otra varialble                      
-      temp.med.valor = temperatura;                                          //Asigna el de "temperatura" a la variable de la estructura
+      temp.med.valor = temperatura;                                          //Asigna el valor de "temperatura" a la variable de la estructura
       temp.med.tiempo = millis() - tiempo0;                                  //Define el tiempo desde la ultima medicion
       temp.med.indic = 'T';                                                  //Guarda el caracter al que indica el sensor
       for (unsigned long long i = 0; i < sizeof(mediciones); i++){
@@ -62,9 +62,9 @@ void loop() {
   //Datos de sensor humedad--------------------------------------------------     
       if (letra == 'h' || letra == 'H'){                                     //Evalua la letra recibida
       uint16_t HUMEDAD = dht.readHumidity();                                 //Lee y guarda el valor del sensor de humedad
-      hum.med.tiempo = millis() - tiempo0;                                   //Define el tiempo desde la ultima medicion
-      hum.med.valor = HUMEDAD;                                               //Asigna el de "HUMEDAD" a la variable de la estructura
-      hum.med.indic = 'H';                                                   //Guarda el caracter al que indica el sensor
+      hum.med.tiempo = millis() - tiempo0;                                   //Define y asigna el tiempo desde la ultima medicion
+      hum.med.valor = HUMEDAD;                                               //Asigna el valor de "HUMEDAD" a la variable de la estructura
+      hum.med.indic = 'H';                                                   //Asigna el caracter al que indica el sensor
       for (unsigned long long i = 0; i < sizeof(mediciones); i++){          
         Serial.write (hum.a[i]); }                                           //Envia los datos guardados y compartidos en la union a traves de un arreglo
       }
@@ -77,9 +77,9 @@ void loop() {
       DURACION = pulseIn (ECO, HIGH);                                        //               "
       DISTANCIA = DURACION / 58.2;                                           //Asigna la medicion del sensor ultrasonido a la variable "DISTANCIA"
   
-      ult.med.valor = DISTANCIA;                                             //Asigna el de "DISTANCIA" a la variable de la estructura                               
-      ult.med.tiempo = millis() - tiempo0;                                   //Define el tiempo desde la ultima medicion
-      ult.med.indic = 'U';                                                   //Guarda el caracter al que indica el sensor
+      ult.med.valor = DISTANCIA;                                             //Asigna el valor de "DISTANCIA" a la variable de la estructura                               
+      ult.med.tiempo = millis() - tiempo0;                                   //Define y asigna el tiempo desde la ultima medicion
+      ult.med.indic = 'U';                                                   //Asigna el caracter al que indica el sensor
       for (unsigned long long i = 0; i < sizeof(mediciones); i++){
         Serial.write (ult.a[i]); }                                           //Envia los datos guardados y compartidos en la union a traves de un arreglo
       }
