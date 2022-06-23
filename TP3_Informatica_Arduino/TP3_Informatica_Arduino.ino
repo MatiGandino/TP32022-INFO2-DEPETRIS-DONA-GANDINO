@@ -1,19 +1,17 @@
-#include <DHT.h>                          //Librerias humedad
-#include <DHT_U.h>                        //       "
-#include <stdint.h> 
-#define SENSORTEM A0
+#include <DHT.h>                            //Librerias humedad
+#include <DHT_U.h>                          //       "
+#include <stdint.h>                         //Libreria para usar uint16_t
+#define SENSORTEM A0                        //Variable de sensor de temperatura
 
 
-//size_t n;                                  //
-//uint8_t letra[1];
-char letra;
-int SENSOR = 2, i;
-DHT dht (SENSOR, DHT11);
+char letra;                                 //Char que recibe la letra del sensor
+
+int SENSOR = 2, i;                          //Variables de sensor humedad
+DHT dht (SENSOR, DHT11);                    //        "
 
 unsigned long tiempo0;                      //Variable que almacena la función millis. 
 
 float TEM;                                  //Valor analogico sensor temperatura
-//float valtem = ((TEM * 5000.0) / 1024)/10;
 
 int TRIG = 10;                              //Disparador sensor ultrasonido
 int ECO = 9;                                //Receptor sensor ultrasonido
@@ -21,34 +19,33 @@ int DURACION;                               //Variable que almacena el tiempo de
 int DISTANCIA;                              //Calculo de distancia (ultrasonido)
 
 
-struct mediciones{  
-    uint32_t tiempo;
-    uint16_t valor;
-    char indic;
-    char charr; 
+struct mediciones{                          //Estructura donde se guardaran los valores de los sensores
+    uint32_t tiempo;                        //Int donde se guarda el tiempo desde la ultima medicion
+    uint16_t valor;                         //Int donde se guarda el valor del sensor 
+    char indic;                             //Char donde se guarda el inicial del sensor
+    char charr;                             //Char para evitar diferencia de tamaño de la estructura entre C y C++
 }; 
 
-union Umed {
-  mediciones med;
-  byte a[sizeof(mediciones)];
-}temp, hum, ult;
+union Umed {                                //Union donde se guardaran las mediciones y el envio de datos      
+  mediciones med;                           //Estructura con los valores de las mediciones
+  byte a[sizeof(mediciones)];               //Envio de datos
+}temp, hum, ult;                            
                                           
 
 void setup(){
-  Serial.begin(9600);                         //Inicializar el monitor serie
+  Serial.begin(9600);                       //Inicializar el monitor serie
   
-  dht.begin ();                               //Inicialización del sensor de humedad
+  dht.begin ();                             //Inicialización del sensor de humedad
   
-  pinMode (TRIG, OUTPUT);                     //Salida ultrasonido
-  pinMode (ECO, INPUT);                       //Entrada ultrasonido
+  pinMode (TRIG, OUTPUT);                   //Salida ultrasonido
+  pinMode (ECO, INPUT);                     //Entrada ultrasonido
   
-  tiempo0 = 0;                                //Inicializamos tiempo
+  tiempo0 = 0;                              //Inicializamos tiempo
 }
 
+
 void loop() {
-  //delay (1000);
     if(Serial.available()){
-//      letra = 'J';
     letra = Serial.read();
     
   //Datos de sensor temperatura----------------------------------------------   
