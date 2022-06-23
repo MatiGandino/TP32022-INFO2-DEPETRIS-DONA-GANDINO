@@ -21,7 +21,7 @@ int DURACION;                               //Variable que almacena el tiempo de
 int DISTANCIA;                              //Calculo de distancia (ultrasonido)
 
 
-struct mediciones {  
+struct mediciones{  
     uint32_t tiempo;
     uint16_t valor;
     char indic;
@@ -46,14 +46,16 @@ void setup(){
 }
 
 void loop() {
+  //delay (1000);
     if(Serial.available()){
 //      letra = 'J';
     letra = Serial.read();
     
   //Datos de sensor temperatura----------------------------------------------   
-      if (letra == 'T'){
-      TEM = analogRead(SENSORTEM);                                   
-      temp.med.valor = ((TEM * 5000.0) / 1024)/10;
+      if (letra == 't' || letra == 'T'){
+      TEM = analogRead(SENSORTEM); 
+      int temperatura = (((TEM * 5000.0) / 1023)/10);                                  
+      temp.med.valor = temperatura;
       temp.med.tiempo = millis() - tiempo0;
       temp.med.indic = 'T'; 
       for (unsigned long long i = 0; i < sizeof(mediciones); i++){
@@ -61,7 +63,7 @@ void loop() {
       }
   
   //Datos de sensor humedad--------------------------------------------------     
-      if (letra == 'H'){
+      if (letra == 'h' || letra == 'H'){
       uint16_t HUMEDAD = dht.readHumidity();  
       hum.med.tiempo = millis() - tiempo0;
       hum.med.valor = HUMEDAD;
@@ -71,7 +73,7 @@ void loop() {
       }
   
   //Datos de sensor ultrasonido----------------------------------------------
-      if (letra == 'U'){
+      if (letra == 'u' || letra == 'U'){
       digitalWrite(TRIG, HIGH);
       delay (1);                                                              //Funcionamiento sensor ultrasonido
       digitalWrite (TRIG, LOW);
