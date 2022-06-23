@@ -49,43 +49,43 @@ void loop() {
     letra = Serial.read();                  //Realiza la lectura de lo que se envia por el puerto serie
     
   //Datos de sensor temperatura----------------------------------------------   
-      if (letra == 't' || letra == 'T'){                                //Evalua la letra recibida
-      TEM = analogRead(SENSORTEM);                                      //Lee y guarda el valor del sensor de temperatura
-      int temperatura = (((TEM * 5000.0) / 1023)/10);                   //Convierte el valor del sensor y lo guarda en otra varialble                      
-      temp.med.valor = temperatura;                                     //Asigna el de "temperatura" a la variable de la estructura
-      temp.med.tiempo = millis() - tiempo0;                             //Define el tiempo desde la ultima medicion
-      temp.med.indic = 'T';                                             //Guarda el caracter al que indica el sensor
+      if (letra == 't' || letra == 'T'){                                     //Evalua la letra recibida
+      TEM = analogRead(SENSORTEM);                                           //Lee y guarda el valor del sensor de temperatura
+      int temperatura = (((TEM * 5000.0) / 1023)/10);                        //Convierte el valor del sensor y lo guarda en otra varialble                      
+      temp.med.valor = temperatura;                                          //Asigna el de "temperatura" a la variable de la estructura
+      temp.med.tiempo = millis() - tiempo0;                                  //Define el tiempo desde la ultima medicion
+      temp.med.indic = 'T';                                                  //Guarda el caracter al que indica el sensor
       for (unsigned long long i = 0; i < sizeof(mediciones); i++){
-        Serial.write (temp.a[i]); }                                     //Envia los datos guardados y compartidos en la union a traves de un arreglo
+        Serial.write (temp.a[i]); }                                          //Envia los datos guardados y compartidos en la union a traves de un arreglo
       }
   
   //Datos de sensor humedad--------------------------------------------------     
-      if (letra == 'h' || letra == 'H'){                                //Evalua la letra recibida
-      uint16_t HUMEDAD = dht.readHumidity();                            //Lee y guarda el valor del sensor de humedad
-      hum.med.tiempo = millis() - tiempo0;                              //Define el tiempo desde la ultima medicion
-      hum.med.valor = HUMEDAD;                                          //Asigna el de "HUMEDAD" a la variable de la estructura
-      hum.med.indic = 'H';                                              //Guarda el caracter al que indica el sensor
+      if (letra == 'h' || letra == 'H'){                                     //Evalua la letra recibida
+      uint16_t HUMEDAD = dht.readHumidity();                                 //Lee y guarda el valor del sensor de humedad
+      hum.med.tiempo = millis() - tiempo0;                                   //Define el tiempo desde la ultima medicion
+      hum.med.valor = HUMEDAD;                                               //Asigna el de "HUMEDAD" a la variable de la estructura
+      hum.med.indic = 'H';                                                   //Guarda el caracter al que indica el sensor
       for (unsigned long long i = 0; i < sizeof(mediciones); i++){          
-        Serial.write (hum.a[i]); }                                      //Envia los datos guardados y compartidos en la union a traves de un arreglo
+        Serial.write (hum.a[i]); }                                           //Envia los datos guardados y compartidos en la union a traves de un arreglo
       }
   
   //Datos de sensor ultrasonido----------------------------------------------
-      if (letra == 'u' || letra == 'U'){                                      //Evalua la letra recibida
-      digitalWrite(TRIG, HIGH);                                               //Funcionamiento sensor ultrasonido
-      delay (1);                                                              //               "
-      digitalWrite (TRIG, LOW);                                               //               " 
-      DURACION = pulseIn (ECO, HIGH);                                         //               "
-      DISTANCIA = DURACION / 58.2;                                            //Asigna la medicion del sensor ultrasonido a la variable "DISTANCIA"
+      if (letra == 'u' || letra == 'U'){                                     //Evalua la letra recibida
+      digitalWrite(TRIG, HIGH);                                              //Funcionamiento sensor ultrasonido
+      delay (1);                                                             //               "
+      digitalWrite (TRIG, LOW);                                              //               " 
+      DURACION = pulseIn (ECO, HIGH);                                        //               "
+      DISTANCIA = DURACION / 58.2;                                           //Asigna la medicion del sensor ultrasonido a la variable "DISTANCIA"
   
-      ult.med.valor = DISTANCIA;                                              //Asigna el de "DISTANCIA" a la variable de la estructura                               
-      ult.med.tiempo = millis() - tiempo0;                                    //Define el tiempo desde la ultima medicion
-      ult.med.indic = 'U';                                                    //Guarda el caracter al que indica el sensor
+      ult.med.valor = DISTANCIA;                                             //Asigna el de "DISTANCIA" a la variable de la estructura                               
+      ult.med.tiempo = millis() - tiempo0;                                   //Define el tiempo desde la ultima medicion
+      ult.med.indic = 'U';                                                   //Guarda el caracter al que indica el sensor
       for (unsigned long long i = 0; i < sizeof(mediciones); i++){
-        Serial.write (ult.a[i]); }                                            //Envia los datos guardados y compartidos en la union a traves de un arreglo
+        Serial.write (ult.a[i]); }                                           //Envia los datos guardados y compartidos en la union a traves de un arreglo
       }
   
   //-------------------------------------------------------------------------
-      tiempo0 = millis();                                                     //Valorizacion tiempo respecto a millis
+      tiempo0 = millis();                                                    //Valorizacion tiempo respecto a millis
       
     }
 }
